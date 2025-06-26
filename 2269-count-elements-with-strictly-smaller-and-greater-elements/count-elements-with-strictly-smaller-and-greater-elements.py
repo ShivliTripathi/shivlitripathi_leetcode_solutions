@@ -9,5 +9,4 @@ class Solution:
         for i in nums:
             if m_min < i < m_max:
                 cnt+=1
-        
         return cnt
