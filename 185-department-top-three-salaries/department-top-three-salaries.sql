@@ -1,7 +1,20 @@
--- Write your PostgreSQL query statement below
-with cte as (select d.name as Department, e.name as Employee, e.salary as Salary,
-dense_rank() over(partition by e.departmentId order by e.salary desc) as drnk
-from 
-Department d join Employee e on e.departmentId = d.id)
-
-select Department, Employee, Salary from cte where drnk<=3
+# Write your MySQL query statement below
+WITH df AS (
+    SELECT 
+        E.name AS Employee,
+        D.name AS Department,
+        E.salary AS Salary
+    FROM Employee E
+    JOIN Department D ON E.departmentId = D.id
+),
+df1 AS (
+    SELECT 
+        Employee,
+        Department,
+        Salary,
+        DENSE_RANK() OVER (PARTITION BY Department ORDER BY Salary DESC) AS rnk
+    FROM df
+)
+SELECT Department, Employee, Salary
+FROM df1
+WHERE rnk <= 3;
